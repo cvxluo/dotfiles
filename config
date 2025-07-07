@@ -1,0 +1,12 @@
+background-opacity=0.95
+
+window-padding-x = 5
+macos-titlebar-style = native
+
+
+# theme = catppuccin-mocha
+theme = FishTank
+# minimum-contrast = 3
+
+font-thicken = true
+keybind = shift+enter=text:\n
