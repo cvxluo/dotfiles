@@ -10,3 +10,4 @@ theme = FishTank
 
 font-thicken = true
 keybind = shift+enter=text:\n
+window-save-state = always
