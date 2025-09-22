@@ -5,7 +5,7 @@ macos-titlebar-style = native
 
 
 # theme = catppuccin-mocha
-theme = FishTank
+theme = Fish Tank
 # minimum-contrast = 3
 
 font-thicken = true
