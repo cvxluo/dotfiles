@@ -1,0 +1,15 @@
+"$schema" = "https://jj-vcs.github.io/jj/latest/config-schema.json"
+
+[user]
+name = "Charlie Luo"
+email = "cvxluo@gmail.com"
+
+# Default to showing only my commits in `jj log` (override with `jj log -r 'all()'`)
+[revsets]
+log = 'mine()'
+
+# Shortcut to view all commits
+[aliases]
+log-all = ["log", "-r", "all()"]
+# Move bookmarks from ancestor heads to the parent commit
+tug = ["bookmark", "move", "--from", "heads(::@- & bookmarks())", "--to", "@-"]
