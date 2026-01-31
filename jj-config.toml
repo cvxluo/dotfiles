@@ -15,4 +15,4 @@ log-all = ["log", "-r", "all()"]
 tug = ["bookmark", "move", "--from", "heads(::@- & bookmarks())", "--to", "@-"]
 
 [templates]
-git_push_bookmark = '"cvxluo/" ++ description.first_line().split(": ").last().lower().replace(" ", "-").substr(0, 50)'
+git_push_bookmark = '"cvxluo/" ++ description.first_line().split(": ").filter(|s| s.contains(" ")).map(|s| s.lower().replace(" ", "-")).join("-")'
