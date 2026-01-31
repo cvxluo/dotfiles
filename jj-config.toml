@@ -13,3 +13,6 @@ log = 'mine()'
 log-all = ["log", "-r", "all()"]
 # Move bookmarks from ancestor heads to the parent commit
 tug = ["bookmark", "move", "--from", "heads(::@- & bookmarks())", "--to", "@-"]
+
+[templates]
+git_push_bookmark = '"cvxluo/" ++ description.first_line().split(": ").last().lower().replace(" ", "-").substr(0, 50)'
