@@ -4,9 +4,9 @@
 name = "Charlie Luo"
 email = "cvxluo@gmail.com"
 
-# Default to showing only my commits in `jj log` (override with `jj log -r 'all()'`)
+# Default to showing my commits + remote tracking bookmarks in `jj log`
 [revsets]
-log = 'mine()'
+log = 'mine() | present(main@origin) | present(master@origin)'
 
 # Shortcut to view all commits
 [aliases]
