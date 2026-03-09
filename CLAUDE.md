@@ -4,13 +4,14 @@
 
 ### General Workflow
 - Commit work often using `jj commit` (not `jj describe` + `jj new`)
+- When commiting, always specify the specific files that were changed, e.g. `jj commit -m "feat(scope): description" -m "src/sentry/foo/bar.py" -m "tests/sentry/foo/test_bar.py"`
 - Clean up history afterwards with `jj squash` or `jj absorb`
 - Never push unless explicitly asked
 - Ask before creating bookmarks
 
 ### Commit Messages
 - Use conventional commit format: `type(scope): description`
-- Types: `feat`, `fix`, `chore`, `refactor`, `test`, `docs`, `style`, `perf`
+- Types: `feat`, `fix`, `chore`, `ref` (refactor), `test`, `docs`
 - Scope should describe the area of the codebase affected
 
 ### Co-authorship
