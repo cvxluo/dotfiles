@@ -4,7 +4,7 @@
 
 ### General Workflow
 - Commit work often using `jj commit` (not `jj describe` + `jj new`)
-- When commiting, always specify the specific files that were changed, e.g. `jj commit -m "feat(scope): description" -m "src/sentry/foo/bar.py" -m "tests/sentry/foo/test_bar.py"`
+- When committing, specify the files you modified. Only commit the specific files you modified, like so: `jj commit -m "feat(scope): description" path/to/file1.py path/to/file2.py`
 - Clean up history afterwards with `jj squash` or `jj absorb`
 - Never push unless explicitly asked
 - Ask before creating bookmarks
@@ -22,7 +22,7 @@ Co-authored-by: Claude <noreply@anthropic.com>
 
 Use multi-message format with jj:
 ```bash
-jj commit -m "feat(scope): description" -m "" -m "Co-authored-by: Claude <noreply@anthropic.com>"
+jj commit -m "feat(scope): description" -m "" -m "Co-authored-by: Claude <noreply@anthropic.com>" path/to/file1.py path/to/file2.py
 ```
 
 ### Commit Granularity
