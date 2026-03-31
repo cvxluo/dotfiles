@@ -1,4 +1,8 @@
+
 # Personal Development Preferences
+
+# General
+- ALWAYS use your built-in tools to read and edit files.
 
 ## Version Control (jj/Jujutsu)
 
@@ -35,3 +39,8 @@ jj commit -m "feat(scope): description" -m "" -m "Co-authored-by: Claude <norepl
 - Use `jj squash` to combine related commits before review
 - Use `jj absorb` to automatically fold fixups into the right commits
 - Goal: clean, well-organized history that tells a clear story
+
+### Handling Divergences and Conflicts
+- Conflicts are often caused by pre-commit pushing a new commit
+- You can prevent these by running pre-commit hooks manually before pushing. Remember that `jj` will not run pre-commit hooks automatically.
+- If you see a conflict caused by this pattern, you can resolve it by abandoning or absorbing the pre-commit change and moving the bookmark back where you want it.
