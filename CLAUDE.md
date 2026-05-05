@@ -1,9 +1,6 @@
 
 # Personal Development Preferences
 
-# General
-- ALWAYS use your built-in tools to read and edit files.
-
 ## Version Control (jj/Jujutsu)
 
 ### General Workflow
