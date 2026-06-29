@@ -19,4 +19,21 @@ log-all = ["log", "-r", "all()"]
 tug = ["bookmark", "move", "--from", "heads(::@- & bookmarks())", "--to", "@-"]
 
 [templates]
-git_push_bookmark = '"cvxluo/" ++ change_id.short()'
+# Auto-generate bookmark names from commit message description,
+# falling back to change_id if no description exists.
+# e.g. "feat(scope): Add foo bar" -> "cvxluo/add-foo-bar"
+git_push_bookmark = '''
+if(
+  description.first_line().replace(regex:"^[^:]+:\\s*", "").len() > 0,
+  "cvxluo/" ++ description.first_line()
+    .replace(regex:"^[^:]+:\\s*", "")
+    .lower()
+    .replace("_", "-")
+    .replace(regex:"[^a-z0-9 -]", "")
+    .replace(" ", "-")
+    .replace(regex:"-{2,}", "-")
+    .replace(regex:"^-|-$", "")
+    .substr(0, 50),
+  "cvxluo/" ++ change_id.short()
+)
+'''
