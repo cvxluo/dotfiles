@@ -7,6 +7,10 @@ email = "cvxluo@gmail.com"
 # Default to showing my commits + remote tracking bookmarks in `jj log`
 [revsets]
 log = 'mine() | present(main@origin) | present(master@origin)'
+# Priority set for short change-id prefixes. Must stay cheap — it's evaluated on EVERY
+# command (short-prefixes falls back to revsets.log when unset, so an unbounded mine()
+# here would scan all commits per command). Covers @, trunk, and all branch commits.
+short-prefixes = '@ | trunk() | (trunk()..bookmarks())'
 
 # Shortcut to view all commits
 [aliases]
