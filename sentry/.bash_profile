@@ -39,3 +39,16 @@ export SENTRY_POST_MERGE_AUTO_UPDATE=1
 export CPATH=/opt/homebrew/include
 export LIBRARY_PATH=/opt/homebrew/lib
 export PATH="$HOME/.local/bin:$PATH"
+
+# launch claude with OpenRouter key injected from 1Password
+# (one Touch ID per launch, nothing on disk)
+claude() {
+  local key
+  key="$(op read 'op://Employee/OpenRouter API Key - Claude Code/credential' --account sentry.1password.com)" || return 1
+
+  (export OPENROUTER_API_KEY="${key}"
+  export ANTHROPIC_BASE_URL="https://openrouter.ai/api"
+  export ANTHROPIC_AUTH_TOKEN="$OPENROUTER_API_KEY"
+  export ANTHROPIC_API_KEY="" # Important: must be explicitly empty
+  command claude "$@")
+}
