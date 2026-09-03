@@ -17,6 +17,7 @@ short-prefixes = '@ | trunk() | (trunk()..bookmarks())'
 log-all = ["log", "-r", "all()"]
 # Move bookmarks from ancestor heads to the parent commit
 tug = ["bookmark", "move", "--from", "heads(::@- & bookmarks())", "--to", "@-"]
+prune-mega = ["rebase", "-r", "@", "-o", "heads(trunk() | (parents(@) ~ ::trunk()))"]
 
 [templates]
 # Auto-generate bookmark names from commit message description,
