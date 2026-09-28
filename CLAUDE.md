@@ -5,30 +5,32 @@
 
 ### General Workflow
 
-Optimized for running multiple Claude Code sessions against a shared working copy (no worktrees).
+The goal is to be able to run multiple agent sessions against a shared working copy.
 
-**The "mega-merge" pattern:** a merge commit (`@`) on top of every in-flight feature branch, each branched off `trunk()`. It's your integrated working view; each branch stays independently mergeable. All native jj.
+**The "mega-merge" pattern:** a merge commit (`@`) on top of every in-flight feature branch, each branched off `trunk()`
 
 ```
-        ┌── feat-a ──┐
-trunk ──┼── feat-b ──┼── @  (mega = octopus merge)
-        └── feat-c ──┘
+        ┌── change-a - change-a-2 - change-a-3 ──┐
+trunk ──┼── change-b ------------------------- ──┼── @  (mega = octopus merge)
+        └── change-c ── change-c-2 ----------- ──┘
 ```
 
-1. **Build**: `jj new feat-a feat-b -m mega`.
-2. **Route edits down**: edit in `@`, then `jj absorb` (routes each change to the branch owning those lines) or `jj squash --into feat-x -u <files>` (`-u` keeps that branch's message).
-3. **Add a branch**: `jj split -d 'trunk()' <files> -m "feat(scope): …"` (peels onto a new branch, detaching from `@`), then `jj rebase -r @ -d feat-a -d feat-b -d feat-c` to re-merge.
-4. **Drop a landed branch**: `jj git fetch`, then `jj rebase -r @ -d 'trunk()' -d <remaining>` and `jj bookmark delete <landed>`.
+In the above example, we're working on 3 features, a, b, and c. The features are stacked into several changes - and the mega merge is the theoretical final state once all three changes are merged to trunk.
 
-Branches can stay anonymous (by change-id); the push template names the bookmark, so create one only at push.
-
-**Constraints:**
-
-- **Reshape while stable**: jj snapshots `@` on every command, so route down and rebase when edits are settled; pause concurrent edits while reshaping
-- **Same-file races**: jj protects history, not the working copy; last write wins on disk, so keep parallel sessions on disjoint paths
-- Send each edit to the branch it belongs to
+Some common patterns and operations:
+- As a guiding principle, you can use your judgement on whether an operation is safe to run if it would break other concurrent sessions working on **different** features.
+    - For example, if you `jj edit` to modify a specific change, that will always break other concurrent sessions that were editing other files in the mega merge - never do this.
+    - However, if you `jj rebase` out a change out from the mega merge in order to edit a child change that you're working on, that won't break other features, so it is safe to do.
+- When starting a new set of changes, you can make edits immediately on the mega merge commit (`@`). Then, split out the changes as a parent of the mega merge with `jj split -d 'trunk()' <files> -m "feat(scope): …"`
+    - Make sure to specify the files you want to split out.
+    - `jj absorb <files>` is a useful pattern if you have edits that need to be squashed into several changes at once.
 - Never push unless explicitly asked
 - Ask before creating bookmarks
+- Sometimes you'll run into a conflict or divergence. You should always try to address these before asking for review.
+    - Conflicts are often caused by pre-commit pushing a new commit.
+    - You can prevent these by running pre-commit hooks manually before pushing. Remember that `jj` will not run pre-commit hooks automatically.
+    - If you see a conflict caused by this pattern, you can resolve it by abandoning or absorbing the pre-commit change and moving the bookmark back where you want it.
+- You should avoid leaving changes in the mega merge commit. You should always split out the changes into parents of the mega merge when possible.
 
 ### Commit Messages
 - Use conventional commit format: `type(scope): description`
@@ -36,24 +38,8 @@ Branches can stay anonymous (by change-id); the push template names the bookmark
 - Scope should describe the area of the codebase affected
 
 ### Co-authorship
-jj adds no trailer; pass one as an extra `-m` on `jj describe`/`split`/`squash`:
+Pass a co-author trailer as an extra `-m` on `jj describe`/`split`/`squash`:
 ```bash
 jj describe feat-a -m "feat(scope): description" \
                    -m "Co-authored-by: Claude <noreply@anthropic.com>"
 ```
-
-### Commit Granularity
-- Be judicious - optimize for ease of review
-- Keep commits logically separated so reviewers can understand changes incrementally
-- Related changes can be grouped if they're tightly coupled
-- Use `jj split` if a commit becomes too large or unfocused
-
-### History Cleanup
-- Use `jj squash` to combine related commits before review
-- Use `jj absorb` to automatically fold fixups into the right commits
-- Goal: clean, well-organized history that tells a clear story
-
-### Handling Divergences and Conflicts
-- Conflicts are often caused by pre-commit pushing a new commit
-- You can prevent these by running pre-commit hooks manually before pushing. Remember that `jj` will not run pre-commit hooks automatically.
-- If you see a conflict caused by this pattern, you can resolve it by abandoning or absorbing the pre-commit change and moving the bookmark back where you want it.
