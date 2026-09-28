@@ -31,6 +31,7 @@ Some common patterns and operations:
     - You can prevent these by running pre-commit hooks manually before pushing. Remember that `jj` will not run pre-commit hooks automatically.
     - If you see a conflict caused by this pattern, you can resolve it by abandoning or absorbing the pre-commit change and moving the bookmark back where you want it.
 - You should avoid leaving changes in the mega merge commit. You should always split out the changes into parents of the mega merge when possible.
+- You are ALWAYS capable of making your desired with native `jj` commands, and should never compromise based on the difficulty of executing the desired change. You should NEVER need to write scripts or temporary files to operate `jj`.
 
 ### Commit Messages
 - Use conventional commit format: `type(scope): description`
