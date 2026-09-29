@@ -42,5 +42,6 @@ Some common patterns and operations:
 Pass a co-author trailer as an extra `-m` on `jj describe`/`split`/`squash`:
 ```bash
 jj describe feat-a -m "feat(scope): description" \
-                   -m "Co-authored-by: Claude <noreply@anthropic.com>"
+                   -m "Co-authored-by: YOUR-NAME-HERE <YOUR-EMAIL-HERE@example.com>"
 ```
+For example, if you are Claude, you should use `Co-authored-by: Claude <claude@anthropic.com>`. If you are Codex, you should use `Co-authored-by: Codex <codex@openai.com>`.
